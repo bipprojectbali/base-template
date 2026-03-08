@@ -12,14 +12,15 @@ on:
                 type: choice
                 default: "dev"
                 options:
+                    - dev
                     - stg
                     - prod
-                    - dev
     
 jobs:
     publish:
         name: Re-Pull Docker ${{ github.event.inputs.stack_name }}
         runs-on: ubuntu-latest
+        environment: portainer
         permissions:
             contents: read
             packages: write
