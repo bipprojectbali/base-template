@@ -11,10 +11,21 @@ TOKEN=$(curl -s -X POST https://${PORTAINER_URL}/api/auth \
   -d "{\"username\": \"${PORTAINER_USERNAME}\", \"password\": \"${PORTAINER_PASSWORD}\"}" \
   | jq -r .jwt)
 
+if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+  echo "❌ Autentikasi gagal! Cek PORTAINER_URL, USERNAME, dan PASSWORD."
+  exit 1
+fi
+
 echo "🔍 Mencari stack: $STACK_NAME..."
 STACK=$(curl -s -X GET https://${PORTAINER_URL}/api/stacks \
   -H "Authorization: Bearer ${TOKEN}" \
   | jq ".[] | select(.Name == \"$STACK_NAME\")")
+
+if [ -z "$STACK" ]; then
+  echo "❌ Stack '$STACK_NAME' tidak ditemukan di Portainer!"
+  echo "   Pastikan nama stack sudah benar."
+  exit 1
+fi
 
 STACK_ID=$(echo "$STACK" | jq -r .Id)
 ENDPOINT_ID=$(echo "$STACK" | jq -r .EndpointId)
