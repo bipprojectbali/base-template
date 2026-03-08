@@ -40,4 +40,5 @@ blob-report/
 playwright/.cache/
 
 /generated/prisma
+/xxx
 /x
