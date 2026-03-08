@@ -10,7 +10,7 @@ on:
                 description: "stack env"
                 required: true
                 type: choice
-                default: "stg"
+                default: "dev"
                 options:
                     - stg
                     - prod
