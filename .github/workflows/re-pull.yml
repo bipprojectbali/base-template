@@ -1,0 +1,36 @@
+name: Re-Pull Docker
+on:
+    workflow_dispatch:
+        inputs:
+            stack_name:
+                description: "stack name"
+                required: true
+                type: string
+            stack_env:
+                description: "stack env"
+                required: true
+                type: choice
+                default: "stg"
+                options:
+                    - stg
+                    - prod
+                    - dev
+    
+jobs:
+    publish:
+        name: Re-Pull Docker ${{ github.event.inputs.stack_name }}
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Deploy ke Portainer
+              run: bash ./.github/workflows/script/re-pull.sh
+              env:
+                  PORTAINER_USERNAME: ${{ secrets.PORTAINER_USERNAME }}
+                  PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
+                  PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+                  STACK_NAME: ${{ github.event.inputs.stack_name }}-${{ github.event.inputs.stack_env }}
