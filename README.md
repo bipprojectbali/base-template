@@ -13,7 +13,6 @@
 - **📜 Contract-First API**: Strictly typed API using OpenAPI. Frontend types are automatically synced from backend schemas.
 - **⚛️ React 19 + TanStack Router**: The latest React features with type-safe, file-based routing.
 - **🎨 Mantine UI**: A comprehensive library of 100+ components and hooks, pre-configured with a modern dark theme.
-- **📱 PWA & TWA Support**: Ready for mobile with Service Workers, Web Manifest, and Android Trusted Web Activity verification.
 - **🔍 React Dev Inspector**: `Alt/Option + Click` any element in your browser to jump directly to its source code in VS Code.
 - **🧪 Modern Testing**: Fast unit/integration tests with Bun's native runner and E2E testing with Playwright.
 
