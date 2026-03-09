@@ -1,0 +1,46 @@
+name: Distribute Workflows to All Repos
+
+on:
+    workflow_dispatch:
+
+env:
+    OWNER: bipprojectbali
+    SOURCE_REPO: base-template
+
+jobs:
+    distribute:
+        name: Distribute workflows to all repos
+        runs-on: ubuntu-latest
+        environment: ${{ vars.PORTAINER_ENV || 'portainer' }}
+        permissions:
+            contents: read
+        steps:
+            - name: Checkout source repo
+              uses: actions/checkout@v4
+
+            - name: Distribute workflows
+              run: bash ./.github/workflows/script/dist-workflows.sh
+              env:
+                  GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+                  TARGET_OWNER: ${{ env.OWNER }}
+                  SOURCE_REPO: ${{ env.SOURCE_REPO }}
+
+            - name: Notify success
+              if: success()
+              run: bash ./.github/workflows/script/notify.sh
+              env:
+                  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+                  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                  NOTIFY_STATUS: success
+                  NOTIFY_WORKFLOW: "Distribute Workflows"
+                  NOTIFY_DETAIL: "Source: ${{ env.OWNER }}/${{ env.SOURCE_REPO }}"
+
+            - name: Notify failure
+              if: failure()
+              run: bash ./.github/workflows/script/notify.sh
+              env:
+                  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+                  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                  NOTIFY_STATUS: failure
+                  NOTIFY_WORKFLOW: "Distribute Workflows"
+                  NOTIFY_DETAIL: "Source: ${{ env.OWNER }}/${{ env.SOURCE_REPO }}"
