@@ -74,3 +74,23 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           no-cache: true
+
+      - name: Notify success
+        if: success()
+        run: bash ./.github/workflows/script/notify.sh
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          NOTIFY_STATUS: success
+          NOTIFY_WORKFLOW: "Publish Docker"
+          NOTIFY_DETAIL: "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.stack_env }}-${{ github.event.inputs.tag }}"
+
+      - name: Notify failure
+        if: failure()
+        run: bash ./.github/workflows/script/notify.sh
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          NOTIFY_STATUS: failure
+          NOTIFY_WORKFLOW: "Publish Docker"
+          NOTIFY_DETAIL: "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.stack_env }}-${{ github.event.inputs.tag }}"

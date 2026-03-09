@@ -35,3 +35,23 @@ jobs:
                   PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
                   PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
                   STACK_NAME: ${{ github.event.inputs.stack_name }}-${{ github.event.inputs.stack_env }}
+
+            - name: Notify success
+              if: success()
+              run: bash ./.github/workflows/script/notify.sh
+              env:
+                  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+                  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                  NOTIFY_STATUS: success
+                  NOTIFY_WORKFLOW: "Re-Pull Docker"
+                  NOTIFY_DETAIL: "Stack: ${{ github.event.inputs.stack_name }}-${{ github.event.inputs.stack_env }}"
+
+            - name: Notify failure
+              if: failure()
+              run: bash ./.github/workflows/script/notify.sh
+              env:
+                  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+                  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                  NOTIFY_STATUS: failure
+                  NOTIFY_WORKFLOW: "Re-Pull Docker"
+                  NOTIFY_DETAIL: "Stack: ${{ github.event.inputs.stack_name }}-${{ github.event.inputs.stack_env }}"
