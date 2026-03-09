@@ -39,8 +39,10 @@ jobs:
           sudo docker image prune --all --force
           df -h
 
-      - name: Checkout repository
+      - name: Checkout branch ${{ github.event.inputs.stack_env }}
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.stack_env }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
