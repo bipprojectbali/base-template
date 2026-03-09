@@ -44,6 +44,13 @@ jobs:
         with:
           ref: ${{ github.event.inputs.stack_env }}
 
+      - name: Checkout scripts from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: .ci
+          sparse-checkout: .github/workflows/script
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -79,7 +86,7 @@ jobs:
 
       - name: Notify success
         if: success()
-        run: bash ./.github/workflows/script/notify.sh
+        run: bash ./.ci/.github/workflows/script/notify.sh
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -89,7 +96,7 @@ jobs:
 
       - name: Notify failure
         if: failure()
-        run: bash ./.github/workflows/script/notify.sh
+        run: bash ./.ci/.github/workflows/script/notify.sh
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
