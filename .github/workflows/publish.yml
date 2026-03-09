@@ -26,6 +26,7 @@ jobs:
   publish:
     name: Build & Push to GHCR ${{ github.repository }}:${{ github.event.inputs.stack_env }}-${{ github.event.inputs.tag }}
     runs-on: ubuntu-latest
+    environment: ${{ vars.PORTAINER_ENV || 'portainer' }}
     permissions:
       contents: read
       packages: write
