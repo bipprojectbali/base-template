@@ -20,7 +20,7 @@ jobs:
     publish:
         name: Re-Pull Docker ${{ github.event.inputs.stack_name }}
         runs-on: ubuntu-latest
-        environment: portainer
+        environment: ${{ vars.PORTAINER_ENV || 'portainer' }}
         permissions:
             contents: read
             packages: write
