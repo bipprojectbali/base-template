@@ -97,11 +97,21 @@ while [ $COUNT -lt $MAX_RETRY ]; do
     exit 1
   fi
 
-  if [ "$NEW_RUNNING" -gt "0" ]; then
+  if [ "$NEW_RUNNING" -gt "0" ]; then    
+    # Cleanup dangling images setelah redeploy sukses
+    echo "🧹 Membersihkan dangling images..."
+    curl -s -X POST "https://${PORTAINER_URL}/api/endpoints/${ENDPOINT_ID}/docker/images/prune" \
+      -H "Authorization: Bearer ${TOKEN}" \
+      -H "Content-Type: application/json" \
+      -d '{"filters":{"dangling":["true"]}}' | jq -r '"   Reclaimed: \(.SpaceReclaimed // 0 | . / 1073741824 | tostring | .[0:5]) GB"'
+    
+    echo "✅ Cleanup selesai!"
     echo ""
     echo "✅ Stack $STACK_NAME berhasil di-redeploy dengan image baru dan running!"
     exit 0
   fi
+
+  
 done
 
 echo ""

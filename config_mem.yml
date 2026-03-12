@@ -6,7 +6,6 @@ mem_limit: 1g
 mem_reservation: 512m
 pids_limit: 512
 cpu_shares: 512
-shm_size: '512mb'
 
 ---
 
@@ -16,7 +15,6 @@ mem_limit: 2g
 mem_reservation: 1g
 pids_limit: 512
 cpu_shares: 1024
-shm_size: '512mb'
 
 ---
 
@@ -26,7 +24,6 @@ mem_limit: 3g
 mem_reservation: 1536m
 pids_limit: 512
 cpu_shares: 1536
-shm_size: '512mb'
 
 ---
 
@@ -36,7 +33,6 @@ mem_limit: 4g
 mem_reservation: 2g
 pids_limit: 1024
 cpu_shares: 2048
-shm_size: '1g'
 
 ---
 
@@ -46,7 +42,6 @@ mem_limit: 5g
 mem_reservation: 2560m
 pids_limit: 1024
 cpu_shares: 2560
-shm_size: '1g'
 
 ---
 
@@ -56,7 +51,6 @@ mem_limit: 6g
 mem_reservation: 3g
 pids_limit: 1024
 cpu_shares: 3072
-shm_size: '1g'
 
 ---
 
@@ -66,7 +60,6 @@ mem_limit: 7g
 mem_reservation: 3584m
 pids_limit: 1024
 cpu_shares: 3584
-shm_size: '2g'
 
 ---
 
@@ -76,4 +69,3 @@ mem_limit: 8g
 mem_reservation: 4g
 pids_limit: 2048
 cpu_shares: 4096
-shm_size: '2g'

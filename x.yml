@@ -1,50 +1,36 @@
 services:
   app:
-    image: registry.gitlab.com/kurosakiblackangel/portainer/base-app
-    container_name: base-template
-    restart: unless-stopped
-    cpus: "1"
-    mem_limit: 2g
-    mem_reservation: 1g
+    image: ghcr.io/bipprojectbali/sort:stg-latest
+    container_name: sort
+    restart: always
+    cpus: "0.5"
+    mem_limit: 1g
+    mem_reservation: 512m
     pids_limit: 512
-    cpu_shares: 1024
-    shm_size: '512mb'
+    cpu_shares: 512
+    shm_size: "512mb"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
     logging:
-      driver: json-file
+      driver: "json-file"
       options:
-        max-size: 10m
+        max-size: "10m"
         max-file: "3"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=public-net"
-      - "traefik.http.routers.base-template.rule=Host(`base-template.wibudev.com`)"
-      - "traefik.http.routers.base-template.entrypoints=websecure"
-      - "traefik.http.routers.base-template.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.base-template.priority=200"
-      - "traefik.http.routers.base-template.service=base-template"
-      - "traefik.http.services.base-template.loadbalancer.server.port=3000"
-    volumes:
-      - /srv/docker/volumes/apps/base-template/app:/app
-    environment:
-      - VITE_PUBLIC_URL=${VITE_PUBLIC_URL}
-      - DATABASE_URL=${DATABASE_URL}
-      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - ADMIN_EMAIL=${ADMIN_EMAIL}
-      - BOT_TOKEN=${BOT_TOKEN}
-      - CHAT_ID=${CHAT_ID}
-      - GIT_URL=${GIT_URL}
-      - GIT_BRANCH=${GIT_BRANCH}
+      - "traefik.http.routers.sort-stg.rule=Host(`sort.wibudev.com`)"
+      - "traefik.http.routers.sort-stg.entrypoints=websecure"
+      - "traefik.http.routers.sort-stg.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sort-stg.service=sort-stg"
+      - "traefik.http.services.sort-stg.loadbalancer.server.port=3000"
     networks:
-      - postgres-net
       - public-net
+      - postgres-net
 
 networks:
   postgres-net:
     external: true
   public-net:
-    external: true
-  
+    external: true 
